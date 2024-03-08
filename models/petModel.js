@@ -8,7 +8,9 @@ const PetSchema = new Schema({
     imageUrl: {type: String, required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},
+    species: {type: String, required: [true,'*Campo obrigatório!']},
     age: {type: String},
+    state: {type: String, required: [true,'*Campo obrigatório!']},
     city: {type: String, required: [true,'*Campo obrigatório!']},
     race: {type: String},
     description: {type: String}
@@ -27,7 +29,9 @@ module.exports = Pet;
 //     "imageUrl": "www.teste.com",
 //     "name": "Floquinho",
 //     "gender": "male",
+//     "species": "Cachorro",
 //     "age": "2 anos",
+//     "state": "Minas Gerais",
 //     "city": "Santa Rita do Sapucaí",
 //     "race": "Vira lata",
 //     "description": "Não se adaptou ao irmãozinho (um gatinho)"
