@@ -1,0 +1,16 @@
+{
+  "name": "miaudote-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "AInda não há testes configurados"
+  },
+  "author": "Daiane, Laura e Samuel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3",
+    "mongodb": "^6.4.0",
+    "mongoose": "^8.2.1"
+  }
+}
