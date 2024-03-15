@@ -5,14 +5,14 @@ const PetSchema = new Schema({
     status: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
     idUser: {type: Number, required: [true,'*Campo obrigatório!']},
-    imageUrl: {type: String, required: [true,'*Campo obrigatório!']},
+    photos: {type: [String], required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},
     species: {type: String, required: [true,'*Campo obrigatório!']},
     age: {type: String},
     state: {type: String, required: [true,'*Campo obrigatório!']},
     city: {type: String, required: [true,'*Campo obrigatório!']},
-    race: {type: String},
+    breed: {type: String},
     description: {type: String}
 });
 
@@ -26,13 +26,13 @@ module.exports = Pet;
 //     "status": "available",
 //     "registrationDate": "2024-03-08T00:00:00.000Z",
 //     "idUser": 123456789,
-//     "imageUrl": "www.teste.com",
+//     "photos": ["www.teste.com"],
 //     "name": "Floquinho",
 //     "gender": "male",
 //     "species": "Cachorro",
 //     "age": "2 anos",
 //     "state": "Minas Gerais",
 //     "city": "Santa Rita do Sapucaí",
-//     "race": "Vira lata",
+//     "breed": "Vira lata",
 //     "description": "Não se adaptou ao irmãozinho (um gatinho)"
 // }
