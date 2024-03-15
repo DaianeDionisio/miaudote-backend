@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const PhotoSchema = new Schema({
+    url: {type: String, required: [true,'*Campo obrigatório!']},
+    alt: {type: String, required: [true,'*Campo obrigatório!']}
+})
+
 const PetSchema = new Schema({
     status: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
@@ -15,11 +20,6 @@ const PetSchema = new Schema({
     breed: {type: String},
     description: {type: String}
 });
-
-const PhotoSchema = new Schema({
-    url: {type: String, required: [true,'*Campo obrigatório!']},
-    alt: {type: String, required: [true,'*Campo obrigatório!']}
-})
 
 const Pet = mongoose.model('Pet', PetSchema);
 module.exports = Pet;
