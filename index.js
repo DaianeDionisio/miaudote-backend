@@ -23,9 +23,12 @@ function configureMiddlewares() {
 function settingRoutes() {
     const petRoutes = require('./routes/pet');
     const userRoutes = require('./routes/user');
+    const loginRoutes = require('./routes/login');
 
     app.use('/api', petRoutes);
     app.use('/api', userRoutes);
+    app.use('/api', loginRoutes);
+
 }
 
 function configureMongo() {
