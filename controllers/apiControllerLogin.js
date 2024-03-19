@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Login = require('../models/loginModel');
 const User = require('../models/userModel');
 
 exports.login = async (req, res) => {
@@ -29,7 +28,7 @@ exports.login = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
         console.debug(token)
 
-        res.json({ token });
+        res.json({ token, userId: user._id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro no servidor' });
