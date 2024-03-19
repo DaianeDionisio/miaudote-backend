@@ -1,10 +1,11 @@
 const User = require('../models/userModel');
 
 exports.getUser = function (req, res, next) {
-    User.find({_id: req.params.id}).then(function(user){
+    User.findOne({_id: req.params.id}).then(function(user){
         res.send(user);
     }).catch(next);
 };
+
 
 exports.getAllUsers = function (req, res, next) {
     User.find().then(function(users){
