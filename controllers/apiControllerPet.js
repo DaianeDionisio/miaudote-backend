@@ -38,7 +38,7 @@ exports.deletePet = function (req, res, next) {
 };
 
 exports.getPetsByUser = function (req, res, next) {
-    let idUser = req.body.idUser;
+    let idUser = req.params.id;
 
     Pet.find({idUser: idUser}).then(function(pets){
         if (pets.length) {
@@ -75,7 +75,7 @@ exports.getPetsByFilter = function (req, res, next) {
 };
 
 exports.getSavedPetsByUser = function (req, res, next) {
-    let idUser = req.body.idUser;
+    let idUser = req.params.id;
 
     ApiControllerUser.getUserById(idUser).then(user => {
         if (!user) {
