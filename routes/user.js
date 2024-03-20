@@ -9,5 +9,7 @@ router.get('/user',apiControllerUser.getAllUsers);
 router.post('/user',apiControllerUser.createUser);
 router.put('/user/:id', authMiddleware.verifyToken, apiControllerUser.updateUser);
 router.delete('/user/:id', authMiddleware.verifyToken, apiControllerUser.deleteUser);
+router.post('/addFavoritePet', apiControllerUser.addFavoritePet);
+router.post('/removeFavoritePet', apiControllerUser.removeFavoritePet);
 
 module.exports = router;
