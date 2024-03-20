@@ -5,9 +5,7 @@ require('dotenv').config();
 const ACCOUNT_SID = process.env.Whatsapp_ACCOUNT_SID;
 const AUTH_TOKEN = process.env.Whatsapp_AUTH_TOKEN;
 const PHONE_NUMBER = process.env.Whatsapp_PHONE_NUMBER;
-
-console.log(ACCOUNT_SID)
-
+ //teste
 const client = new twilio(ACCOUNT_SID, AUTH_TOKEN);
 
 
