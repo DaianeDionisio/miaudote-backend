@@ -13,5 +13,6 @@ router.delete('/pet/:id', authMiddleware.verifyToken, apiControllerPet.deletePet
 router.post('/getPetsByUser', authMiddleware.verifyToken, apiControllerPet.getPetsByUser);
 router.post('/getPetsByCity', apiControllerPet.getPetsByCity);
 router.post('/getPetsByFilter', apiControllerPet.getPetsByFilter);
+router.post('/getSavedPetsByUser', apiControllerPet.getSavedPetsByUser);
 
 module.exports = router;

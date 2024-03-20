@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 
+
 exports.getUser = function (req, res, next) {
     User.findOne({_id: req.params.id}).then(function(user){
         res.send(user);
@@ -34,4 +35,8 @@ exports.deleteUser = function (req, res, next) {
         }
         res.send(user);
     }).catch(next);
+};
+
+exports.getUserById = function (idUser) {
+    return User.findOne({_id: idUser});
 };
