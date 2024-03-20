@@ -14,7 +14,6 @@ startServer();
 handleHomePage();
 
 
-
 function configureMiddlewares() {
     app.use(bodyParser.json());
     app.use(cors());
@@ -24,10 +23,12 @@ function settingRoutes() {
     const petRoutes = require('./routes/pet');
     const userRoutes = require('./routes/user');
     const loginRoutes = require('./routes/login');
+    const whatsappRoutes = require('./routes/whatsapp');
 
     app.use('/api', petRoutes);
     app.use('/api', userRoutes);
     app.use('/api', loginRoutes);
+    app.use('/api', whatsappRoutes);
 
 }
 
