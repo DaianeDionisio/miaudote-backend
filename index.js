@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const app = express();
 const port = 5000;
 
@@ -33,7 +35,8 @@ function settingRoutes() {
 }
 
 function configureMongo() {
-    const uri = `mongodb+srv://admin:5rQqCEhN4gEWlTCf@main.6lpints.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
+    const uri = `mongodb+srv://admin:` + process.env.Mongo_PASSWORD + 
+        `5rQqCEhN4gEWlTCf@main.6lpints.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
 
     mongoose.connect(uri);
 }
