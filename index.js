@@ -36,7 +36,7 @@ function settingRoutes() {
 
 function configureMongo() {
     const uri = `mongodb+srv://admin:` + process.env.Mongo_PASSWORD + 
-        `5rQqCEhN4gEWlTCf@main.6lpints.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
+        `@main.6lpints.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
 
     mongoose.connect(uri);
 }
