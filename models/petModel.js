@@ -9,7 +9,7 @@ const PhotoSchema = new Schema({
 const PetSchema = new Schema({
     status: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
-    idUser: {type: Number, required: [true,'*Campo obrigatório!']},
+    idUser: {type: String, required: [true,'*Campo obrigatório!']},
     photos: {type: [PhotoSchema], required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},

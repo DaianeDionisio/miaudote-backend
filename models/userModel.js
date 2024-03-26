@@ -8,7 +8,7 @@ const UserSchema = new Schema({
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
     email: {type: String, required: [true,'*Campo obrigatório!']},
     celphone: {type: String, required: [true,'*Campo obrigatório!']},
-    city: {type: String, required: [true,'*Campo obrigatório!']},
+    city: {type: String},
     idSavedPets: {type: [Number]},
 });
 

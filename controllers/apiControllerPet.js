@@ -40,6 +40,7 @@ exports.getPetsByUser = function (req, res, next) {
     let idUser = req.body.idUser;
 
     Pet.find({idUser: idUser}).then(function(pets){
+        console.debug(pets)
         if (pets.length) {
             res.send(pets);
         } else {
