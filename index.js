@@ -26,12 +26,13 @@ function settingRoutes() {
     const userRoutes = require('./routes/user');
     const loginRoutes = require('./routes/login');
     const whatsappRoutes = require('./routes/whatsapp');
+    const specieRoutes = require('./routes/specie');
 
     app.use('/api', petRoutes);
     app.use('/api', userRoutes);
     app.use('/api', loginRoutes);
     app.use('/api', whatsappRoutes);
-
+    app.use('/api', specieRoutes);
 }
 
 function configureMongo() {
