@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const multer = require('multer'); // Importe o multer
 
 const app = express();
 const port = 5000;
@@ -9,6 +10,7 @@ const port = 5000;
 configureMiddlewares();
 settingRoutes();
 configureMongo();
+configureMulter(); // Adicione a configuração do Multer
 configureErrorHandling();
 startServer();
 handleHomePage();
@@ -35,6 +37,20 @@ function configureMongo() {
     const uri = `mongodb+srv://admin:5rQqCEhN4gEWlTCf@main.6lpints.mongodb.net/?retryWrites=true&w=majority&appName=Main`;
 
     mongoose.connect(uri);
+}
+
+function configureMulter() {
+    // Configuração básica do Multer para salvar os arquivos no diretório 'uploads'
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+            cb(null, 'uploads/');
+        },
+        filename: function(req, file, cb) {
+            cb(null, file.originalname);
+        }
+    });
+
+    app.use(multer({ storage: storage }).any()); // Permite que qualquer tipo de arquivo seja enviado
 }
 
 function configureErrorHandling() {

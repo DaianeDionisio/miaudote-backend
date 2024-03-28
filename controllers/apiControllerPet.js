@@ -13,10 +13,40 @@ exports.getAllPets = function (req, res, next) {
 };
  
 exports.createPet = function (req, res, next) {
-    Pet.create(req.body).then(function(pet){
-        res.send(pet);
-    }).catch(next);
+    console.debug('req => ', req)
+    const petData = req.body;
+    const photos = petData.photos; 
+
+    // Construa o objeto de pet com os dados recebidos
+    const pet = new Pet({
+        status: petData.status,
+        registrationDate: petData.registrationDate,
+        idUser: petData.idUser,
+        name: petData.name,
+        gender: petData.gender,
+        species: petData.species,
+        age: petData.age,
+        state: petData.state,
+        city: petData.city,
+        breed: petData.breed,
+        description: petData.description,
+        // Adicione as fotos ao objeto pet
+        photos: photos.map(photo => ({
+            url: photo.url, // Path para a foto no servidor
+            alt: photo.alt // Nome original da foto
+        }))
+    });
+
+    // Salve o novo pet no banco de dados
+    pet.save()
+        .then(savedPet => {
+            res.status(201).json(savedPet);
+        })
+        .catch(err => {
+            res.status(500).json({ error: err.message });
+        });
 };
+
 
 exports.updatePet = function (req, res, next) {
     Pet.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){

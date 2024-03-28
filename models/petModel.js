@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PhotoSchema = new Schema({
-    url: {type: String, required: [true,'*Campo obrigatório!']},
-    alt: {type: String, required: [true,'*Campo obrigatório!']}
-})
+    url: {type: String, required: [true, '*Campo obrigatório!']},
+    alt: {type: String, required: [true, '*Campo obrigatório!']}
+});
 
 const PetSchema = new Schema({
     status: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
     idUser: {type: String, required: [true,'*Campo obrigatório!']},
-    photos: {type: [PhotoSchema], required: [true,'*Campo obrigatório!']},
+    photos: {type: [PhotoSchema]},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},
     species: {type: String, required: [true,'*Campo obrigatório!']},
