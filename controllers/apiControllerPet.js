@@ -1,4 +1,5 @@
 const Pet = require('../models/petModel');
+const ApiControllerUser = require('./apiControllerUser');
 
 exports.getPet = function (req, res, next) {
     Pet.find({_id: req.params.id}).then(function(pet){
@@ -67,7 +68,7 @@ exports.deletePet = function (req, res, next) {
 };
 
 exports.getPetsByUser = function (req, res, next) {
-    let idUser = req.body.idUser;
+    let idUser = req.params.id;
 
     Pet.find({idUser: idUser}).then(function(pets){
         console.debug(pets)
@@ -101,5 +102,25 @@ exports.getPetsByFilter = function (req, res, next) {
             return res.status(404).json({ error: "Pets not found" });
         }
         res.send(pet);
+    }).catch(next);
+};
+
+exports.getSavedPetsByUser = function (req, res, next) {
+    let idUser = req.params.id;
+
+    ApiControllerUser.getUserById(idUser).then(user => {
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        console.log(user)
+        let petIds = user.idSavedPets;
+        return Pet.find({ _id: { $in: petIds } });
+    }).then(pets => {
+        if (pets && pets.length) {
+            res.send(pets);
+        } else {
+            return res.status(404).json({ error: "Pets not found for this user" });
+        }
     }).catch(next);
 };

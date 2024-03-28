@@ -10,13 +10,13 @@ const PetSchema = new Schema({
     status: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
     idUser: {type: String, required: [true,'*Campo obrigatório!']},
-    photos: {type: [PhotoSchema]},
+    photos: {type: [PhotoSchema], required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},
-    species: {type: String, required: [true,'*Campo obrigatório!']},
+    idSpecie: {type: String, required: [true,'*Campo obrigatório!']},
     age: {type: String},
-    state: {type: String, required: [true,'*Campo obrigatório!']},
-    city: {type: String, required: [true,'*Campo obrigatório!']},
+    idState: {type: String, required: [true,'*Campo obrigatório!']},
+    idCity: {type: String, required: [true,'*Campo obrigatório!']},
     breed: {type: String},
     description: {type: String}
 });
@@ -30,14 +30,14 @@ module.exports = Pet;
 // {
 //     "status": "available",
 //     "registrationDate": "2024-03-08T00:00:00.000Z",
-//     "idUser": 123456789,
+//     "idUser": "123456789",
 //     "photos": [url: "www.teste.com", alt: "Photo 1"],
 //     "name": "Floquinho",
 //     "gender": "male",
-//     "species": "Cachorro",
+//     "idSpecie": "123456",
 //     "age": "2 anos",
-//     "state": "Minas Gerais",
-//     "city": "Santa Rita do Sapucaí",
+//     "idState": "Minas Gerais",
+//     "idCity": "Santa Rita do Sapucaí",
 //     "breed": "Vira lata",
 //     "description": "Não se adaptou ao irmãozinho (um gatinho)"
 // }

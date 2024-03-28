@@ -8,8 +8,8 @@ const UserSchema = new Schema({
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
     email: {type: String, required: [true,'*Campo obrigatório!']},
     celphone: {type: String, required: [true,'*Campo obrigatório!']},
-    city: {type: String},
-    idSavedPets: {type: [Number]},
+    city: {type: String, required: [true,'*Campo obrigatório!']},
+    idSavedPets: {type: [String]},
 });
 
 const User = mongoose.model('User', UserSchema);
@@ -26,5 +26,5 @@ module.exports = User;
 //     "email": "ana@silva.gmail",
 //     "celphone": "12965412395",
 //     "city": "Pouso Alegre",
-//     "idSavedPets": [123456]
+//     "idSavedPets": ["123456"]
 // }
