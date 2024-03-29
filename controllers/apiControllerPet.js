@@ -1,4 +1,6 @@
 const Pet = require('../models/petModel');
+const AgePets = require('../models/petModel');
+
 const ApiControllerUser = require('./apiControllerUser');
 
 exports.getPet = function (req, res, next) {
@@ -91,5 +93,28 @@ exports.getSavedPetsByUser = function (req, res, next) {
         } else {
             return res.status(404).json({ error: "Pets not found for this user" });
         }
+    }).catch(next);
+};
+
+/** Idade dos pets */
+
+
+exports.getAllAgePets = function (req, res, next) {
+    AgePets.find().then(function(pets){
+        res.send(pets);
+    }).catch(next);
+};
+
+exports.createAgePets = function (req, res, next) {
+    AgePets.create(req.body).then(function(pet){
+        res.send(pet);
+    }).catch(next);
+};
+
+exports.updateAgePet = function (req, res, next) {
+    AgePets.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
+        AgePets.findOne({_id: req.params.id}).then(function(pet){
+            res.send(pet);
+        });
     }).catch(next);
 };

@@ -15,4 +15,10 @@ router.post('/getPetsByCity', apiControllerPet.getPetsByCity);
 router.post('/getPetsByFilter', apiControllerPet.getPetsByFilter);
 router.get('/getSavedPetsByUser/:id', apiControllerPet.getSavedPetsByUser);
 
+/** Idade dos pets */
+router.get('/agePets', apiControllerPet.getAllAgePets);
+router.post('/createAgePets', apiControllerPet.createAgePets);
+router.put('/agePet/:id', apiControllerPet.updateAgePet);
+
+
 module.exports = router;
