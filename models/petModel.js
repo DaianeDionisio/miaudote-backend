@@ -30,9 +30,10 @@ const PetSchema = new Schema({
 
 const Pet = mongoose.model('Pet', PetSchema);
 const AgePet = mongoose.model('AgeSchema', PetAgesSchema);
-module.exports = Pet;
-module.exports = AgePet;
-
+module.exports = {
+    Pet: mongoose.model('Pet', PetSchema),
+    AgePet: mongoose.model('AgePet', PetAgesSchema)
+};
 
 // example:
 

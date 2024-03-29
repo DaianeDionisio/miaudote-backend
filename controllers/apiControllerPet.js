@@ -1,5 +1,4 @@
-const Pet = require('../models/petModel');
-const AgePets = require('../models/petModel');
+const { Pet, AgePet } = require('../models/petModel');
 
 const ApiControllerUser = require('./apiControllerUser');
 
@@ -100,20 +99,20 @@ exports.getSavedPetsByUser = function (req, res, next) {
 
 
 exports.getAllAgePets = function (req, res, next) {
-    AgePets.find().then(function(pets){
+    AgePet.find().then(function(pets){
         res.send(pets);
     }).catch(next);
 };
 
 exports.createAgePets = function (req, res, next) {
-    AgePets.create(req.body).then(function(pet){
+    AgePet.create(req.body).then(function(pet){
         res.send(pet);
     }).catch(next);
 };
 
 exports.updateAgePet = function (req, res, next) {
-    AgePets.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
-        AgePets.findOne({_id: req.params.id}).then(function(pet){
+    AgePet.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
+        AgePet.findOne({_id: req.params.id}).then(function(pet){
             res.send(pet);
         });
     }).catch(next);
