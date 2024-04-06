@@ -6,7 +6,7 @@ const apiControllerUser= require('../controllers/apiControllerUser');
 
 router.get('/user/:id',apiControllerUser.getUser);
 router.get('/user',apiControllerUser.getAllUsers);
-router.post('/user',apiControllerUser.createUser);
+router.post('/user', authMiddleware.verifyToken, apiControllerUser.createUser);
 router.put('/user/:id', authMiddleware.verifyToken, apiControllerUser.updateUser);
 router.delete('/user/:id', authMiddleware.verifyToken, apiControllerUser.deleteUser);
 router.post('/addFavoritePet', apiControllerUser.addFavoritePet);

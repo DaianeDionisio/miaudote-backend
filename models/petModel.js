@@ -7,13 +7,13 @@ const PhotoSchema = new Schema({
 })
 
 const PetAgesSchema = new Schema({
-    age: {type: String, required: [true,'*Campo obrigatório!']}
+    age: {type: String, required: [true,'*Campo obrigatório!'], unique: true}
 })
 
 const PetSchema = new Schema({
     status: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
-    idUser: {type: String, required: [true,'*Campo obrigatório!']},
+    user: {type: Schema.Types.ObjectId, ref: 'User', required: [true,'*Campo obrigatório!']},
     photos: {type: [PhotoSchema], required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},
@@ -38,12 +38,12 @@ module.exports = {
 // {
 //     "status": "available",
 //     "registrationDate": "2024-03-08T00:00:00.000Z",
-//     "idUser": "123456789",
-//     "photos": [url: "www.teste.com", alt: "Photo 1"],
+//     "user": {"_id": "123456789"},
+//     "photos": [{"url": "www.teste.com", "alt": "Photo 1"}],
 //     "name": "Floquinho",
 //     "gender": "male",
-//     "idSpecie": "123456",
-//     "age": {_id: "123456"},
+//     "specie": {"_id": "123456"},
+//     "age": {"_id": "123456"},
 //     "idState": "Minas Gerais",
 //     "idCity": "Santa Rita do Sapucaí",
 //     "breed": "Vira lata",

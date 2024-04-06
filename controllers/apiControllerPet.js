@@ -41,26 +41,24 @@ exports.deletePet = function (req, res, next) {
 exports.getPetsByUser = function (req, res, next) {
     let idUser = req.params.id;
 
-    Pet.find({idUser: idUser}).populate('age').populate('specie').then(function(pets){
-        if (pets.length) {
+    Pet.find({'user': idUser}).populate('age').populate('specie').then(function(pets){
+        if (pets) {
             res.send(pets);
         } else {
             return res.status(404).json({ error: "Pets not found" });
         }
-        res.send(pet);
     }).catch(next);
 };
 
 exports.getPetsByCity = function (req, res, next) {
-    let city = req.body.city;
+    let idCity = req.body.city;
 
-    Pet.find({city: city}).populate('age').populate('specie').then(function(pets){
+    Pet.find({idCity: idCity}).populate('age').populate('specie').then(function(pets){
         if (pets.length) {
             res.send(pets);
         } else {
             return res.status(404).json({ error: "Pets not found" });
         }
-        res.send(pet);
     }).catch(next);
 };
 
@@ -71,26 +69,19 @@ exports.getPetsByFilter = function (req, res, next) {
         } else {
             return res.status(404).json({ error: "Pets not found" });
         }
-        res.send(pet);
     }).catch(next);
 };
 
 exports.getSavedPetsByUser = function (req, res, next) {
     let idUser = req.params.id;
 
-    ApiControllerUser.getUserById(idUser).then(user => {
+    ApiControllerUser.getUserById(idUser).populate('savedPets').then(user => {
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        let petIds = user.idSavedPets;
-        return Pet.find({ _id: { $in: petIds } });
-    }).populate('age').populate('specie').then(pets => {
-        if (pets && pets.length) {
-            res.send(pets);
-        } else {
-            return res.status(404).json({ error: "Pets not found for this user" });
-        }
+        let savedPets = user.savedPets;
+        res.send(savedPets);
     }).catch(next);
 };
 

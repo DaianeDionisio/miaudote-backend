@@ -42,7 +42,7 @@ exports.addFavoritePet = function (req, res, next) {
 
     User.findByIdAndUpdate(
         {_id: idUser},
-        { $push: { idSavedPets: idPet } },
+        { $push: { savedPets: {_id: idPet} } },
         { new: true }
     ).then(user => {
         if (!user) {
@@ -58,7 +58,7 @@ exports.removeFavoritePet = function (req, res, next) {
 
     User.findByIdAndUpdate(
         {_id: idUser},
-        { $pull: { idSavedPets: idPet } },
+        { $pull: { savedPets: idPet } },
         { new: true }
     ).then(user => {
         if (!user) {
