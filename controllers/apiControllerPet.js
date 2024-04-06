@@ -3,13 +3,13 @@ const { Pet, AgePet } = require('../models/petModel');
 const ApiControllerUser = require('./apiControllerUser');
 
 exports.getPet = function (req, res, next) {
-    Pet.find({_id: req.params.id}).then(function(pet){
+    Pet.findOne({_id: req.params.id}).populate('age').populate('specie').then(function(pet){
         res.send(pet);
     }).catch(next);
 };
 
 exports.getAllPets = function (req, res, next) {
-    Pet.find().then(function(pets){
+    Pet.find().populate('age').populate('specie').then(function(pets){
         res.send(pets);
     }).catch(next);
 };
@@ -22,14 +22,14 @@ exports.createPet = function (req, res, next) {
 
 exports.updatePet = function (req, res, next) {
     Pet.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
-        Pet.findOne({_id: req.params.id}).then(function(pet){
+        Pet.findOne({_id: req.params.id}).populate('age').populate('specie').then(function(pet){
             res.send(pet);
         });
     }).catch(next);
 };
 
 exports.deletePet = function (req, res, next) {
-    Pet.findByIdAndDelete({_id: req.params.id}).then(function(pet){
+    Pet.findByIdAndDelete({_id: req.params.id}).populate('age').populate('specie').then(function(pet){
         if (!pet) {
             return res.status(404).json({ error: "Pet not found" });
         } else {
@@ -41,7 +41,7 @@ exports.deletePet = function (req, res, next) {
 exports.getPetsByUser = function (req, res, next) {
     let idUser = req.params.id;
 
-    Pet.find({idUser: idUser}).then(function(pets){
+    Pet.find({idUser: idUser}).populate('age').populate('specie').then(function(pets){
         if (pets.length) {
             res.send(pets);
         } else {
@@ -54,7 +54,7 @@ exports.getPetsByUser = function (req, res, next) {
 exports.getPetsByCity = function (req, res, next) {
     let city = req.body.city;
 
-    Pet.find({city: city}).then(function(pets){
+    Pet.find({city: city}).populate('age').populate('specie').then(function(pets){
         if (pets.length) {
             res.send(pets);
         } else {
@@ -65,7 +65,7 @@ exports.getPetsByCity = function (req, res, next) {
 };
 
 exports.getPetsByFilter = function (req, res, next) {
-    Pet.find(req.body).then(function(pets){
+    Pet.find(req.body).populate('age').populate('specie').then(function(pets){
         if (pets.length) {
             res.send(pets);
         } else {
@@ -83,10 +83,9 @@ exports.getSavedPetsByUser = function (req, res, next) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        console.log(user)
         let petIds = user.idSavedPets;
         return Pet.find({ _id: { $in: petIds } });
-    }).then(pets => {
+    }).populate('age').populate('specie').then(pets => {
         if (pets && pets.length) {
             res.send(pets);
         } else {
@@ -97,23 +96,22 @@ exports.getSavedPetsByUser = function (req, res, next) {
 
 /** Idade dos pets */
 
-
 exports.getAllAgePets = function (req, res, next) {
-    AgePet.find().then(function(pets){
-        res.send(pets);
+    AgePet.find().then(function(ages){
+        res.send(ages);
     }).catch(next);
 };
 
 exports.createAgePets = function (req, res, next) {
-    AgePet.create(req.body).then(function(pet){
-        res.send(pet);
+    AgePet.create(req.body).then(function(age){
+        res.send(age);
     }).catch(next);
 };
 
 exports.updateAgePet = function (req, res, next) {
     AgePet.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
-        AgePet.findOne({_id: req.params.id}).then(function(pet){
-            res.send(pet);
+        AgePet.findOne({_id: req.params.id}).then(function(age){
+            res.send(age);
         });
     }).catch(next);
 };

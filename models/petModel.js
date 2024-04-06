@@ -7,7 +7,6 @@ const PhotoSchema = new Schema({
 })
 
 const PetAgesSchema = new Schema({
-    id: {type: Number, required: [true,'*Campo obrigatório!']},
     age: {type: String, required: [true,'*Campo obrigatório!']}
 })
 
@@ -18,10 +17,8 @@ const PetSchema = new Schema({
     photos: {type: [PhotoSchema], required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     gender: {type: String},
-    idSpecie: {type: String, required: [true,'*Campo obrigatório!']},
-    typeSpecie: {type: String, required: [true,'*Campo obrigatório!']},
-    idAge: {type: Number},
-    age: {type: String},
+    specie: {type: Schema.Types.ObjectId, ref: 'Specie', required: [true,'*Campo obrigatório!']},
+    age: {type: Schema.Types.ObjectId, ref: 'AgePet', required: [true,'*Campo obrigatório!']},
     idState: {type: String, required: [true,'*Campo obrigatório!']},
     idCity: {type: String, required: [true,'*Campo obrigatório!']},
     breed: {type: String},
@@ -29,7 +26,8 @@ const PetSchema = new Schema({
 });
 
 const Pet = mongoose.model('Pet', PetSchema);
-const AgePet = mongoose.model('AgeSchema', PetAgesSchema);
+const AgePet = mongoose.model('AgePet', PetAgesSchema);
+
 module.exports = {
     Pet: mongoose.model('Pet', PetSchema),
     AgePet: mongoose.model('AgePet', PetAgesSchema)
@@ -45,7 +43,7 @@ module.exports = {
 //     "name": "Floquinho",
 //     "gender": "male",
 //     "idSpecie": "123456",
-//     "age": "2 anos",
+//     "age": {_id: "123456"},
 //     "idState": "Minas Gerais",
 //     "idCity": "Santa Rita do Sapucaí",
 //     "breed": "Vira lata",
