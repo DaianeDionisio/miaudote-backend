@@ -68,6 +68,25 @@ exports.removeFavoritePet = function (req, res, next) {
     }).catch(next);
 };
 
+exports.getUsersInterestedByPet  = function (req, res, next) {
+    let idPet = req.params.id;
+
+    User.find(
+        { '$and': [
+            # Para cada propriedade em `x`, verificar se ela está presente e tem o mesmo valor em `y`
+            {chave: valor for chave, valor in x.items()},
+            # Adicionalmente, verificar se `y` não tem propriedades que `x` não tem
+            {chave: {'$exists': True} for chave in x}
+        ] },
+    ).then(user => {
+        if (user) {
+            res.send(user);
+        } else {
+            return res.status(404).json({ error: "Users not found" });
+        }
+    }).catch(next);
+};
+
 exports.getUserById = function (idUser) {
     return User.findOne({_id: idUser});
 };
