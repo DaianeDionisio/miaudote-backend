@@ -1,23 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PetInterestData = new Schema({
-    gender: {type: String},
-    specie: {type: Schema.Types.ObjectId, ref: 'Specie'},
-    age: {type: Schema.Types.ObjectId, ref: 'AgePet'},
-    idState: {type: String},
-    idCity: {type: String},
-    breed: {type: String}
-});
-
 const UserSchema = new Schema({
     password: {type: String, required: [true,'*Campo obrigatório!']},
     name: {type: String, required: [true,'*Campo obrigatório!']},
     registrationDate: {type: Date, required: [true, '*Campo obrigatório!']},
     email: {type: String, required: [true,'*Campo obrigatório!'], unique: true},
     celphone: {type: String, required: [true,'*Campo obrigatório!']},
-    savedPets: {type: [Schema.Types.ObjectId], ref: 'Pet'},
-    petInterestData: {type:[PetInterestData]}
+    savedPets: {type: [Schema.Types.ObjectId], ref: 'Pet'}
 });
 
 const User = mongoose.model('User', UserSchema);

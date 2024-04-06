@@ -64,7 +64,7 @@ exports.getPetsByCity = function (req, res, next) {
 
 exports.getPetsByFilter = function (req, res, next) {
     Pet.find(req.body).populate('age').populate('specie').then(function(pets){
-        if (pets.length) {
+        if (pets) {
             res.send(pets);
         } else {
             return res.status(404).json({ error: "Pets not found" });
