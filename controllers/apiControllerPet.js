@@ -63,19 +63,34 @@ exports.getPetsByCity = function (req, res, next) {
 };
 
 exports.getPetsByFilter = function (req, res, next) {
-    Pet.find(req.body).populate('age').populate('specie').then(function(pets){
-        if (pets) {
-            res.send(pets);
-        } else {
-            return res.status(404).json({ error: "Pets not found" });
-        }
-    }).catch(next);
+    const filter = req.body; // Os filtros são enviados no corpo da requisição
+
+    // Construir o objeto de filtro com base nos parâmetros recebidos
+    const query = {};
+    if (filter.age) query.age = filter.age;
+    if (filter.specie) query.specie = filter.specie;
+    if (filter.breed) query.breed = filter.breed;
+    if (filter.gender) query.gender = filter.gender;
+    if (filter.idState) query.idState = filter.idState;
+    if (filter.idCity) query.idCity = filter.idCity;
+    Pet.find(query)
+        .populate('age')
+        .populate('specie')
+        .then(function(pets){
+            if (pets.length) {
+                res.send(pets);
+            } else {
+                return res.status(404).json({ error: "Pets not found" });
+            }
+        })
+        .catch(next);
 };
+
 
 exports.getSavedPetsByUser = function (req, res, next) {
     let idUser = req.params.id;
 
-    ApiControllerUser.getUserById(idUser).populate('savedPets').then(user => {
+    ApiControllerUser.getUserById(idUser).populate('savedPets').populate('age').populate('specie').then(user => {
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
