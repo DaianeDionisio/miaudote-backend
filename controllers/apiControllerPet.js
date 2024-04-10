@@ -90,13 +90,17 @@ exports.getPetsByFilter = function (req, res, next) {
 exports.getSavedPetsByUser = function (req, res, next) {
     let idUser = req.params.id;
 
-    ApiControllerUser.getUserById(idUser).populate('savedPets').populate('age').populate('specie').then(user => {
+    ApiControllerUser.getUserById(idUser).then(user => {
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        let savedPets = user.savedPets;
-        res.send(savedPets);
+        let savedPetsIds = user.savedPets; // IDs dos pets favoritos
+
+        // Buscar os detalhes de cada pet favorito
+        Pet.find({ _id: { $in: savedPetsIds } }).then(savedPets => {
+            res.send(savedPets); // Retorna a lista completa de pets favoritos
+        }).catch(next);
     }).catch(next);
 };
 
