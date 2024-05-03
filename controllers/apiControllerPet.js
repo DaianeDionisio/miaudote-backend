@@ -1,4 +1,5 @@
 const { Pet, AgePet } = require('../models/petModel');
+const PetInterestData = require('../models/petInterestDataModel');
 
 const ApiControllerUser = require('./apiControllerUser');
 
@@ -86,7 +87,6 @@ exports.getPetsByFilter = function (req, res, next) {
         .catch(next);
 };
 
-
 exports.getSavedPetsByUser = function (req, res, next) {
     let idUser = req.params.id;
 
@@ -128,5 +128,70 @@ exports.updateAgePet = function (req, res, next) {
         AgePet.findOne({ _id: req.params.id }).then(function (age) {
             res.send(age);
         });
+    }).catch(next);
+};
+
+/** Dados de interesse dos pets */
+
+exports.createPetInterestData = function (body) {
+    return PetInterestData.create(body);
+};
+
+exports.updatePetInterestData = function (body) {
+    return PetInterestData.findByIdAndUpdate(body._id, body, { new: true })
+        .then(updatedData => {
+            return updatedData;
+        })
+        .catch(error => {
+            throw error;
+    });
+};
+
+exports.deletePetInterestData = function (body) {
+    return PetInterestData.findByIdAndDelete({_id: body._id});
+};
+
+exports.getPetInterestData = function (body) {
+    let filter = body;
+
+    let query = {};
+    if (filter.age) query.age = filter.age;
+    if (filter.specie) query.specie = filter.specie;
+    if (filter.breed) query.breed = filter.breed;
+    if (filter.gender) query.gender = filter.gender;
+    if (filter.idState) query.idState = filter.idState;
+    if (filter.idCity) query.idCity = filter.idCity;
+
+    return PetInterestData.findOne(query).populate('_id');
+};
+
+exports.getInterestedUsersByPet = function (req, res, next) {
+    let idPet = req.params.id;
+    
+    Pet.findOne({ _id: idPet }).populate('age').populate('specie').then(function (newPet) {
+        if (!newPet) {
+            return res.status(404).json({ error: "Pet not found" });
+        }
+
+        PetInterestData.find().then(petDatas => {
+            if (!petDatas || !petDatas.length) {
+                res.send([]);
+                return;
+            }
+            
+            const variables = ["age", "specie", "breed", "gender", "idState", "idCity"];
+            let correspondingData = petDatas.find(petData => {
+                return variables.some(variable => {
+                    return !petData[variable] || (petData[variable] === newPet[variable]);
+                })
+            })
+
+            if (!correspondingData) {
+                res.send([]);
+            } else {
+                res.send(correspondingData.users);
+            }
+
+        }).catch(next);
     }).catch(next);
 };

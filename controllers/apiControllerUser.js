@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 
+const ApiControllerPet = require('./apiControllerPet');
 
 exports.getUser = function (req, res, next) {
     User.findOne({_id: req.params.id}).then(function(user){
@@ -65,6 +66,54 @@ exports.removeFavoritePet = function (req, res, next) {
             return res.status(404).json({ error: "User not found" });
         }
         res.send(user);
+    }).catch(next);
+};
+
+exports.addPetOfInterest = function (req, res, next) {
+    let idUser = req.body.idUser;
+    let petData = req.body.petData;
+
+    ApiControllerPet.getPetInterestData(petData).then(object => {
+        if (!object) {
+            petData.users = [{_id: idUser}];
+            ApiControllerPet.createPetInterestData(petData).then(createdObject => {
+                res.send(createdObject);
+            });
+        } else {
+            let users = object.users || [];
+            users.push({_id: idUser});
+            object.users = users;
+
+            ApiControllerPet.updatePetInterestData(object).then(updateObject => {
+                res.send(updateObject);
+            });
+        }
+    }).catch(next);
+};
+
+exports.removePetOfInterest = function (req, res, next) {
+    let idUser = req.body.idUser;
+    let petData = req.body.petData;
+
+    ApiControllerPet.getPetInterestData(petData).then(object => {
+        if (!object) {
+            return res.status(404).json({ error: "Pet Data not found" });
+        } else {
+            let users = object.users || [];
+            users = users.filter(user => user.valueOf() !== idUser);
+            
+            if (users.length) {
+                object.users = users;
+                
+                ApiControllerPet.updatePetInterestData(object).then(updateObject => {
+                    res.send(updateObject);
+                });
+            } else {
+                ApiControllerPet.deletePetInterestData(object).then(deletedObject => {
+                    res.send(deletedObject);
+                });
+            }
+        }
     }).catch(next);
 };
 

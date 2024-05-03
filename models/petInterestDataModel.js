@@ -7,7 +7,8 @@ const PetInterestDataSchema = new Schema({
     age: {type: Schema.Types.ObjectId, ref: 'AgePet'},
     idState: {type: String},
     idCity: {type: String},
-    breed: {type: String}
+    breed: {type: String},
+    users: [{type: Schema.Types.ObjectId, ref: 'User'}],
 });
 
 const PetInterestData = mongoose.model('PetInterestData', PetInterestDataSchema);

@@ -11,5 +11,7 @@ router.put('/user/:id', authMiddleware.verifyToken, apiControllerUser.updateUser
 router.delete('/user/:id', authMiddleware.verifyToken, apiControllerUser.deleteUser);
 router.post('/addFavoritePet', apiControllerUser.addFavoritePet);
 router.post('/removeFavoritePet', apiControllerUser.removeFavoritePet);
+router.post('/addPetOfInterest', apiControllerUser.addPetOfInterest);
+router.post('/removePetOfInterest', apiControllerUser.removePetOfInterest);
 
 module.exports = router;

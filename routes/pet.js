@@ -14,6 +14,7 @@ router.get('/getPetsByUser/:id', authMiddleware.verifyToken, apiControllerPet.ge
 router.post('/getPetsByCity', apiControllerPet.getPetsByCity);
 router.post('/getPetsByFilter', apiControllerPet.getPetsByFilter);
 router.get('/getSavedPetsByUser/:id', apiControllerPet.getSavedPetsByUser);
+router.get('/getInterestedUsersByPet/:id', apiControllerPet.getInterestedUsersByPet);
 
 /** Idade dos pets */
 router.get('/agePets', apiControllerPet.getAllAgePets);
