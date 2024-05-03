@@ -13,5 +13,6 @@ router.post('/addFavoritePet', apiControllerUser.addFavoritePet);
 router.post('/removeFavoritePet', apiControllerUser.removeFavoritePet);
 router.post('/addPetOfInterest', apiControllerUser.addPetOfInterest);
 router.post('/removePetOfInterest', apiControllerUser.removePetOfInterest);
+router.get('/getPetOfInterestByUser/:id', apiControllerUser.getPetOfInterestByUser);
 
 module.exports = router;

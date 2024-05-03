@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const User = require('../models/userModel');
+const PetInterestData = require('../models/petInterestDataModel');
 
 const ApiControllerPet = require('./apiControllerPet');
 
@@ -116,6 +118,21 @@ exports.removePetOfInterest = function (req, res, next) {
         }
     }).catch(next);
 };
+
+exports.getPetOfInterestByUser = function (req, res, next) {
+    let idUser = req.params.id;
+
+    PetInterestData.find({"users": idUser}).then(petInterestedData => {
+        console.log(petInterestedData)
+        res.send(petInterestedData);
+    }).catch(next);
+};
+
+// Notificações
+
+
+
+//
 
 exports.getUserById = function (idUser) {
     return User.findOne({_id: idUser});
