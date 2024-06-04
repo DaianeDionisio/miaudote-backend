@@ -181,7 +181,36 @@ exports.getPetInterestData = function (body) {
     return PetInterestData.findOne(query).populate('_id');
 };
 
+// exports.getInterestedUsersByPet = function (req, res, next) {
+//     let idPet = req.params.id;
+    
+//     Pet.findOne({ _id: idPet }).populate('age').populate('specie').then(function (newPet) {
+//         if (!newPet) {
+//             return res.status(404).json({ error: "Pet not found" });
+//         }
 
+//         PetInterestData.find().then(petDatas => {
+//             if (!petDatas || !petDatas.length) {
+//                 res.send([]);
+//                 return;
+//             }
+            
+//             const variables = ["age", "specie", "breed", "gender", "idState", "idCity"];
+//             let correspondingData = petDatas.find(petData => {
+//                 return variables.some(variable => {
+//                     return !petData[variable] || (petData[variable] === newPet[variable]);
+//                 })
+//             })
+
+//             if (!correspondingData) {
+//                 res.send([]);
+//             } else {
+//                 res.send(correspondingData.users);
+//             }
+
+//         }).catch(next);
+//     }).catch(next);
+// };
 
 function petMatchesAlertCriteria(pet, alert) {
     // Verificar se o pet corresponde aos critérios de interesse do alerta
