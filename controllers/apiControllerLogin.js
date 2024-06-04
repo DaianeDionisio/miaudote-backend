@@ -8,7 +8,6 @@ exports.login = async (req, res) => {
     try {
         // Verificar se o usuário existe
         const user = await User.findOne({ 'email':  email});
-        console.debug('user => ', user)
         if (!user) {
             return res.status(401).json({ error: 'Credenciais inválidas' });
         }
@@ -26,7 +25,6 @@ exports.login = async (req, res) => {
 
         // Gerar token de autenticação
         const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
-        console.debug(token)
 
         res.json({ token, userId: user._id });
     } catch (error) {

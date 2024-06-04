@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/userModel');
 const PetInterestData = require('../models/petInterestDataModel');
+const Notification = require('../models/notificationModel')
 
 const ApiControllerPet = require('./apiControllerPet');
 
@@ -123,16 +124,25 @@ exports.getPetOfInterestByUser = function (req, res, next) {
     let idUser = req.params.id;
 
     PetInterestData.find({"users": idUser}).then(petInterestedData => {
-        console.log(petInterestedData)
         res.send(petInterestedData);
     }).catch(next);
 };
 
-// Notificações
+exports.getAllPetOfInterest = function () {
+    return PetInterestData.find();
+};
 
-
-
-//
+exports.getNotificationsByUser = async function(req, res, next) {
+    const userId = req.params.id;
+    Notification.find(
+        { userId: userId }
+    ).then(notifications => {
+        if (!notifications) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.send(notifications);
+    }).catch(next);
+}
 
 exports.getUserById = function (idUser) {
     return User.findOne({_id: idUser});

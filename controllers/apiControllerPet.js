@@ -1,7 +1,9 @@
 const { Pet, AgePet } = require('../models/petModel');
 const PetInterestData = require('../models/petInterestDataModel');
+const Notification = require('../models/notificationModel');
 
 const ApiControllerUser = require('./apiControllerUser');
+const ApiControllerWhatsapp = require('./apiControllerWhatsapp');
 
 exports.getPet = function (req, res, next) {
     Pet.findOne({ _id: req.params.id }).populate('age').populate('specie').then(function (pet) {
@@ -12,12 +14,26 @@ exports.getPet = function (req, res, next) {
 exports.getAllPets = function (req, res, next) {
     Pet.find().populate('age').populate('specie').then(function (pets) {
         res.send(pets);
+
+        
     }).catch(next);
 };
 
 exports.createPet = function (req, res, next) {
     Pet.create(req.body).then(function (pet) {
+        // Verificar correspondência de alertas de interesse de usuário
         res.send(pet);
+
+        ApiControllerUser.getAllPetOfInterest().then(alerts => {
+            alerts.forEach(alert => {
+                if (petMatchesAlertCriteria(pet, alert)) {
+                    sendNotification(alert.users, pet);
+                } 
+            });
+        }).catch(error => {
+            
+        });
+
     }).catch(next);
 };
 
@@ -165,33 +181,85 @@ exports.getPetInterestData = function (body) {
     return PetInterestData.findOne(query).populate('_id');
 };
 
-exports.getInterestedUsersByPet = function (req, res, next) {
-    let idPet = req.params.id;
+// exports.getInterestedUsersByPet = function (req, res, next) {
+//     let idPet = req.params.id;
     
-    Pet.findOne({ _id: idPet }).populate('age').populate('specie').then(function (newPet) {
-        if (!newPet) {
-            return res.status(404).json({ error: "Pet not found" });
-        }
+//     Pet.findOne({ _id: idPet }).populate('age').populate('specie').then(function (newPet) {
+//         if (!newPet) {
+//             return res.status(404).json({ error: "Pet not found" });
+//         }
 
-        PetInterestData.find().then(petDatas => {
-            if (!petDatas || !petDatas.length) {
-                res.send([]);
-                return;
-            }
+//         PetInterestData.find().then(petDatas => {
+//             if (!petDatas || !petDatas.length) {
+//                 res.send([]);
+//                 return;
+//             }
             
-            const variables = ["age", "specie", "breed", "gender", "idState", "idCity"];
-            let correspondingData = petDatas.find(petData => {
-                return variables.some(variable => {
-                    return !petData[variable] || (petData[variable] === newPet[variable]);
-                })
-            })
+//             const variables = ["age", "specie", "breed", "gender", "idState", "idCity"];
+//             let correspondingData = petDatas.find(petData => {
+//                 return variables.some(variable => {
+//                     return !petData[variable] || (petData[variable] === newPet[variable]);
+//                 })
+//             })
 
-            if (!correspondingData) {
-                res.send([]);
-            } else {
-                res.send(correspondingData.users);
+//             if (!correspondingData) {
+//                 res.send([]);
+//             } else {
+//                 res.send(correspondingData.users);
+//             }
+
+//         }).catch(next);
+//     }).catch(next);
+// };
+
+function petMatchesAlertCriteria(pet, alert) {
+    // Verificar se o pet corresponde aos critérios de interesse do alerta
+    // Comparar cada atributo do alerta com o pet
+    if (alert.age && pet.age && pet.age.toString() !== alert.age.toString()) {
+        return false;
+    }
+    if (alert.specie && pet.specie && pet.specie.toString() !== alert.specie.toString()) {
+        return false;
+    }
+    if (alert.gender && pet.gender && pet.gender.toString() !== alert.gender.toString()) {
+        return false;
+    }
+    if (alert.idState && pet.idState && pet.idState.toString() !== alert.idState.toString()) {
+        return false;
+    }
+    if (alert.idCity && pet.idCity && pet.idCity.toString() !== alert.idCity.toString()) {
+        return false;
+    }
+    return true;
+}
+
+function sendNotification(users, pet) {
+    const message = `Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}`;
+
+    ApiControllerUser.getUserById(users.toString()).then(user => {
+        if(user?.celphone) {
+            const body = {
+                body: {
+                    "to": "+55"+user.celphone,
+                "message": `Olá ${user.name}! Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}.
+                Acessa a plataforma MIAUDOTE e finalize sua adoção!`
+                }
             }
+            ApiControllerWhatsapp.sendWhatsAppMessage(body);
+        }
+    })
 
-        }).catch(next);
-    }).catch(next);
-};
+    const notification = new Notification({
+        userId: users.toString(),
+        petId: pet._id.toString(),
+        message: message,
+        notificationDate: pet.registrationDate
+    });
+
+    notification.save().then(savedNotification => {
+        console.log('Notificação salva:', savedNotification);
+    }).catch(error => {
+        console.error('Erro ao salvar notificação:', error);
+    });
+    
+}

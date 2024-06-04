@@ -19,9 +19,9 @@ exports.sendWhatsAppMessage = function (req, res) {
             to: 'whatsapp:' + to
         })
         .then(message => {
-            res.send(`Mensagem enviada com ID ${message.sid}`);
+            res?.send(`Mensagem enviada com ID ${message.sid}`);
         })
         .catch(error => {
-            res.status(500).send(error);
+            res?.status(500).send(error);
         });
 };
