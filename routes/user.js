@@ -14,5 +14,7 @@ router.post('/removeFavoritePet', apiControllerUser.removeFavoritePet);
 router.post('/addPetOfInterest', apiControllerUser.addPetOfInterest);
 router.post('/removePetOfInterest', apiControllerUser.removePetOfInterest);
 router.get('/getPetOfInterestByUser/:id', apiControllerUser.getPetOfInterestByUser);
+router.get('/getAllPetOfInterest', apiControllerUser.getAllPetOfInterest);
+router.get('/getNotificationsByUser/:id', apiControllerUser.getNotificationsByUser);
 
 module.exports = router;
