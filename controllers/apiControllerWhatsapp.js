@@ -9,8 +9,6 @@ const PHONE_NUMBER = process.env.Whatsapp_PHONE_NUMBER;
 const client = new twilio(ACCOUNT_SID, AUTH_TOKEN);
 
 exports.sendWhatsAppMessage = function (req, res) {
-    console.debug('req => ', req)
-    console.debug('res => ', res)
     const to = req.body.to;
     const message = req.body.message;
 

@@ -10,7 +10,6 @@ exports.verifyToken = (req, res, next) => {
 
   // Separar a palavra-chave "Bearer" do token
   const token = authHeader.split(' ')[1];
-  console.debug('token => ', token)
   if (!token) {
     return res.status(401).json({ error: 'Token inválido' });
   }

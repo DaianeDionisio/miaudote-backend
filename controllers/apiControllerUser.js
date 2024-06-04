@@ -124,7 +124,6 @@ exports.getPetOfInterestByUser = function (req, res, next) {
     let idUser = req.params.id;
 
     PetInterestData.find({"users": idUser}).then(petInterestedData => {
-        console.log(petInterestedData)
         res.send(petInterestedData);
     }).catch(next);
 };

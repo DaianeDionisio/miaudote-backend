@@ -22,14 +22,11 @@ exports.getAllPets = function (req, res, next) {
 exports.createPet = function (req, res, next) {
     Pet.create(req.body).then(function (pet) {
         // Verificar correspondência de alertas de interesse de usuário
-        console.debug('pet => ', pet)
         res.send(pet);
 
         ApiControllerUser.getAllPetOfInterest().then(alerts => {
             alerts.forEach(alert => {
-                console.debug('match => ', petMatchesAlertCriteria(pet, alert))
                 if (petMatchesAlertCriteria(pet, alert)) {
-                    console.debug('aqui')
                     sendNotification(alert.users, pet);
                 } 
             });
@@ -208,12 +205,9 @@ function petMatchesAlertCriteria(pet, alert) {
 }
 
 function sendNotification(users, pet) {
-    console.debug('users => ', users.toString())
-    console.debug(pet)
     const message = `Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}`;
 
     ApiControllerUser.getUserById(users.toString()).then(user => {
-        console.debug(user)
         if(user?.celphone) {
             const body = {
                 body: {
