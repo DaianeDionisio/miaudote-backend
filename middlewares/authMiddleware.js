@@ -9,11 +9,11 @@ exports.verifyFirebaseToken = (req, res, next) => {
   }
 
   // Separar a palavra-chave "Bearer" do token
-  const token = authHeader;
-  // console.debug('token => ', token)
-  // if (!token) {
-  //   return res.status(401).json({ error: 'Token inválido' });
-  // }
+  const token = authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Token inválido' });
+  }
 
   // Verificar e validar o token do Firebase
   admin.auth().verifyIdToken(token)
