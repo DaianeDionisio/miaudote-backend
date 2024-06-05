@@ -40,7 +40,7 @@ function settingRoutes() {
 
 function configureFirebase() {
     // Configure o SDK com suas credenciais do Firebase
-    const serviceAccount = require('./tcc-miaudote-firebase-adminsdk-2pjza-ca615a5dc0.json')
+    const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_SDK_JSON)
     admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
     });
