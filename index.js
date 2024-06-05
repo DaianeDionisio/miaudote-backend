@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const admin = require('firebase-admin');
+
 
 require('dotenv').config();
 
@@ -10,6 +12,7 @@ const port = 5000;
 
 configureMiddlewares();
 settingRoutes();
+configureFirebase();
 configureMongo();
 configureErrorHandling();
 startServer();
@@ -33,6 +36,14 @@ function settingRoutes() {
     app.use('/api', loginRoutes);
     app.use('/api', whatsappRoutes);
     app.use('/api', specieRoutes);
+}
+
+function configureFirebase() {
+    // Configure o SDK com suas credenciais do Firebase
+    const serviceAccount = require('./tcc-miaudote-firebase-adminsdk-2pjza-ca615a5dc0.json')
+    admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+    });
 }
 
 function configureMongo() {
