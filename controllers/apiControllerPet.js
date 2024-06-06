@@ -15,7 +15,7 @@ exports.getAllPets = function (req, res, next) {
     Pet.find().populate('age').populate('specie').then(function (pets) {
         res.send(pets);
 
-        
+
     }).catch(next);
 };
 
@@ -28,10 +28,10 @@ exports.createPet = function (req, res, next) {
             alerts.forEach(alert => {
                 if (petMatchesAlertCriteria(pet, alert)) {
                     sendNotification(alert.users, pet);
-                } 
+                }
             });
         }).catch(error => {
-            
+
         });
 
     }).catch(next);
@@ -160,11 +160,11 @@ exports.updatePetInterestData = function (body) {
         })
         .catch(error => {
             throw error;
-    });
+        });
 };
 
 exports.deletePetInterestData = function (body) {
-    return PetInterestData.findByIdAndDelete({_id: body._id});
+    return PetInterestData.findByIdAndDelete({ _id: body._id });
 };
 
 exports.getPetInterestData = function (body) {
@@ -183,7 +183,7 @@ exports.getPetInterestData = function (body) {
 
 // exports.getInterestedUsersByPet = function (req, res, next) {
 //     let idPet = req.params.id;
-    
+
 //     Pet.findOne({ _id: idPet }).populate('age').populate('specie').then(function (newPet) {
 //         if (!newPet) {
 //             return res.status(404).json({ error: "Pet not found" });
@@ -194,7 +194,7 @@ exports.getPetInterestData = function (body) {
 //                 res.send([]);
 //                 return;
 //             }
-            
+
 //             const variables = ["age", "specie", "breed", "gender", "idState", "idCity"];
 //             let correspondingData = petDatas.find(petData => {
 //                 return variables.some(variable => {
@@ -237,11 +237,12 @@ function sendNotification(users, pet) {
     const message = `Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}`;
 
     ApiControllerUser.getUserById(users.toString()).then(user => {
-        if(user?.celphone) {
+        if (user?.celphone) {
+            const phoneNumber = separatePhoneNumber(user?.celphone)
             const body = {
                 body: {
-                    "to": "+55"+user.celphone,
-                "message": `Olá ${user.name}! Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}.
+                    "to": "+55" + phoneNumber?.ddd + phoneNumber?.celular,
+                    "message": `Olá ${user.name}! Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}.
                 Acessa a plataforma MIAUDOTE e finalize sua adoção!`
                 }
             }
@@ -261,5 +262,25 @@ function sendNotification(users, pet) {
     }).catch(error => {
         console.error('Erro ao salvar notificação:', error);
     });
-    
+
+}
+
+function separatePhoneNumber(phoneNumber) {
+    // Expressão regular para capturar o DDD (dois primeiros dígitos)
+    const regexDDD = /^(\d{2})/;
+    const matchesDDD = phoneNumber.match(regexDDD);
+    const ddd = matchesDDD ? matchesDDD[1] : null;
+
+    // Expressão regular para capturar o dígito 9
+    const regexNove = /^(\d)9/;
+    const matchesNove = phoneNumber.match(regexNove);
+    const nove = matchesNove ? matchesNove[1] : null;
+
+    // Expressão regular para capturar os 8 dígitos restantes
+    const regexCelular = /^\d{2}9(\d{8})/;
+    const matchesCelular = phoneNumber.match(regexCelular);
+    const celular = matchesCelular ? matchesCelular[1] : null;
+
+    return {ddd: ddd, number: celular}
+
 }

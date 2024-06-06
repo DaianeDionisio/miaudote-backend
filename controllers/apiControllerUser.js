@@ -22,23 +22,15 @@ exports.getAllUsers = function (req, res, next) {
 exports.createUser = async function (req, res, next) {
 
     const { email, password } = req.body;
-
+    console.debug('email => ', email)
     try {
-        // Criar usuário no Firebase Authentication
-        const userRecord = await admin.auth().createUser({
-            email: email,
-            password: password
-        });
-        console.debug('USER => ',userRecord)
         await User.create({
-            userId: userRecord.uid,
             email: email,
             ...req.body
           });
 
-        res.status(201).json({ message: 'Usuário criado com sucesso', uid: userRecord.uid });
+        res.status(201).json({ message: 'Usuário criado com sucesso'});
     } catch (error) {
-        console.error('Erro ao criar usuário:', error);
         res.status(500).json({ error: 'Erro ao criar usuário' });
     }
 };
