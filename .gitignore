@@ -1,3 +1,6 @@
 node_modules/
 .env
 tcc-miaudote-firebase-adminsdk-2pjza-ca615a5dc0.json
+jest-html-reporters*
+jest_html_reporters*
+coverage
