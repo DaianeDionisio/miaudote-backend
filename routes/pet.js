@@ -21,5 +21,7 @@ router.get('/agePets', apiControllerPet.getAllAgePets);
 router.post('/createAgePets', apiControllerPet.createAgePets);
 router.put('/agePet/:id', apiControllerPet.updateAgePet);
 
+router.put('/notification/:id/marcar-lida', apiControllerPet.updateNotification);
+
 
 module.exports = router;

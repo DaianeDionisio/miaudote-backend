@@ -13,7 +13,8 @@ const notificationSchema = new mongoose.Schema({
     notificationDate: {
         type: Date,
         default: Date.now
-    }
+    },
+    wasRead: Boolean
 });
 
 const Notification = mongoose.model('Notification', notificationSchema);

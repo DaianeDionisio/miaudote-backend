@@ -253,7 +253,8 @@ function sendNotification(users, pet) {
         userId: users.toString(),
         petId: pet._id.toString(),
         message: message,
-        notificationDate: pet.registrationDate
+        notificationDate: pet.registrationDate,
+        wasRead: false
     });
 
     notification.save().then(savedNotification => {
@@ -285,3 +286,20 @@ function separatePhoneNumber(phoneNumber) {
     return {ddd: ddd, number: celular}
 
 }
+
+exports.updateNotification = async function (req, res, next) {
+    const notificationId = req.params.id;
+
+    try {
+        const notification = await Notification.findByIdAndUpdate(notificationId, { wasRead: true }, { new: true });
+
+        if (!notification) {
+            return res.status(404).json({ error: 'Notificação não encontrada' });
+        }
+
+        return res.json(notification);
+    } catch (error) {
+        console.error('Erro ao marcar notificação como lida:', error);
+        return res.status(500).json({ error: 'Erro ao marcar notificação como lida' });
+    }
+};
