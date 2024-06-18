@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "AInda não há testes configurados"
+    "test": "jest"
   },
   "author": "Daiane, Laura e Samuel",
   "license": "ISC",
@@ -18,5 +18,10 @@
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.1",
     "twilio": "^5.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-html-reporters": "^3.1.7",
+    "node-mocks-http": "^1.14.1"
   }
 }
