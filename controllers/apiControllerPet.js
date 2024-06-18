@@ -234,16 +234,15 @@ function petMatchesAlertCriteria(pet, alert) {
 }
 
 function sendNotification(users, pet) {
-    const message = `Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}`;
+    const message = `Um novo pet que pode corresponder aos seus interesses foi adicionado: ${pet.name}`;
 
     ApiControllerUser.getUserById(users.toString()).then(user => {
         if (user?.celphone) {
             const phoneNumber = separatePhoneNumber(user?.celphone)
             const body = {
                 body: {
-                    "to": "+55" + phoneNumber?.ddd + phoneNumber?.celular,
-                    "message": `Olá ${user.name}! Um novo pet foi adicionado que pode corresponder aos seus interesses: ${pet.name}.
-                Acessa a plataforma MIAUDOTE e finalize sua adoção!`
+                    "to": "+55" + phoneNumber?.ddd + phoneNumber?.number,
+                    "message": `Olá ${user.name}! Um novo pet que pode corresponder aos seus interesses foi adicionado: ${pet.name}. Acesse a plataforma MIAUDOTE e finalize sua adoção!`
                 }
             }
             ApiControllerWhatsapp.sendWhatsAppMessage(body);
@@ -266,6 +265,8 @@ function sendNotification(users, pet) {
 }
 
 function separatePhoneNumber(phoneNumber) {
+    phoneNumber = phoneNumber.replace(/\D/g, "")
+
     // Expressão regular para capturar o DDD (dois primeiros dígitos)
     const regexDDD = /^(\d{2})/;
     const matchesDDD = phoneNumber.match(regexDDD);
